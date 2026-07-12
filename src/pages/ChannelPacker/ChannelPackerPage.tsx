@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import ToolShell from '../../components/ToolShell'
 import DropZone from '../../components/common/DropZone'
 import ImageCanvas from '../../components/common/ImageCanvas'
+import { useToast } from '../../components/common/Toast'
 import styles from './ChannelPackerPage.module.css'
 
 export default function ChannelPackerPage(): JSX.Element {
@@ -14,9 +15,12 @@ export default function ChannelPackerPage(): JSX.Element {
   const [error, setError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
   const [exporting, setExporting] = useState(false)
+  const [previewing, setPreviewing] = useState(false)
   const [outputFormat, setOutputFormat] = useState('png')
   const [linearizeMetallic, setLinearizeMetallic] = useState(false)
   const [linearizeRoughness, setLinearizeRoughness] = useState(false)
+
+  const { toast } = useToast()
 
   const packOptions = { linearizeMetallic, linearizeRoughness }
 
@@ -24,21 +28,37 @@ export default function ChannelPackerPage(): JSX.Element {
   const handlePreview = useCallback(async () => {
     setError(null)
     setSuccessMsg(null)
+    setPreviewing(true)
 
-    const result = await window.taAPI.packORM(
-      aoPath, metallicPath, roughnessPath, '', packOptions
-    )
+    try {
+      const result = await window.taAPI.packORM(
+        aoPath, metallicPath, roughnessPath, '', packOptions
+      )
 
-    if (result.success && result.dataUrl) {
-      setPreviewUrl(result.dataUrl)
-      if (result.width && result.height) {
-        setPreviewSize({ width: result.width, height: result.height })
+      if (result.success && result.dataUrl) {
+        setPreviewUrl(result.dataUrl)
+        if (result.width && result.height) {
+          setPreviewSize({ width: result.width, height: result.height })
+        }
+      } else {
+        const msg = result.error || '预览失败'
+        // 分辨率不匹配：同时显示内联错误和 toast 警告
+        if (msg.includes('分辨率') || msg.includes('resolution')) {
+          setError(msg)
+          toast('warning', msg)
+        } else {
+          toast('error', '预览失败: ' + msg)
+        }
+        setPreviewUrl(null)
       }
-    } else {
-      setError(result.error || '预览失败')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '预览出错'
+      toast('error', '预览失败: ' + msg)
       setPreviewUrl(null)
+    } finally {
+      setPreviewing(false)
     }
-  }, [aoPath, metallicPath, roughnessPath, linearizeMetallic, linearizeRoughness])
+  }, [aoPath, metallicPath, roughnessPath, linearizeMetallic, linearizeRoughness, toast])
 
   // 导出 ORM
   const handleExport = useCallback(async () => {
@@ -67,16 +87,26 @@ export default function ChannelPackerPage(): JSX.Element {
       )
 
       if (result.success) {
-        setSuccessMsg(`导出成功: ${savePath.split(/[/\\]/).pop()}`)
+        const fileName = savePath.split(/[/\\]/).pop()
+        toast('success', `导出成功: ${fileName}`)
+        setSuccessMsg(`导出成功: ${fileName}`)
       } else {
-        setError(result.error || '导出失败')
+        const msg = result.error || '导出失败'
+        // 分辨率不匹配：同时显示内联错误和 toast 警告
+        if (msg.includes('分辨率') || msg.includes('resolution')) {
+          setError(msg)
+          toast('warning', msg)
+        } else {
+          toast('error', '导出失败: ' + msg)
+        }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : '导出出错')
+      const msg = err instanceof Error ? err.message : '导出出错'
+      toast('error', '导出失败: ' + msg)
     } finally {
       setExporting(false)
     }
-  }, [aoPath, metallicPath, roughnessPath, outputFormat, linearizeMetallic, linearizeRoughness])
+  }, [aoPath, metallicPath, roughnessPath, outputFormat, linearizeMetallic, linearizeRoughness, toast])
 
   const hasAnyInput = !!(aoPath || metallicPath || roughnessPath)
 
@@ -121,7 +151,7 @@ export default function ChannelPackerPage(): JSX.Element {
             <div style={{ marginTop: 12, textAlign: 'center' }}>
               <button
                 onClick={handlePreview}
-                disabled={!hasAnyInput}
+                disabled={!hasAnyInput || previewing}
                 style={{
                   padding: '8px 24px',
                   border: '1px solid var(--color-border)',
@@ -133,7 +163,7 @@ export default function ChannelPackerPage(): JSX.Element {
                   fontFamily: 'inherit'
                 }}
               >
-                生成预览
+                {previewing ? '生成中...' : '生成预览'}
               </button>
             </div>
           </div>

@@ -1,12 +1,12 @@
 .control {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
   width: 100%;
 }
 
 .label {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-text-secondary);
   white-space: nowrap;
   min-width: 100px;
@@ -17,7 +17,7 @@
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
-  background: #e0e0e0;
+  background: var(--color-checker-light);
   border-radius: 3px;
   outline: none;
   cursor: pointer;
@@ -30,7 +30,7 @@
   height: 18px;
   border-radius: 50%;
   background: var(--color-accent);
-  border: 2px solid #fff;
+  border: 2px solid var(--color-white);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: box-shadow var(--transition-fast);
@@ -41,7 +41,7 @@
 }
 
 .value {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-text-primary);
   font-weight: 600;
   min-width: 44px;

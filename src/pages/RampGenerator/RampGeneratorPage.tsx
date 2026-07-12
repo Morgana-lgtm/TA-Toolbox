@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import ToolShell from '../../components/ToolShell'
 import SliderControl from '../../components/common/SliderControl'
+import { useToast } from '../../components/common/Toast'
 import styles from './RampGeneratorPage.module.css'
 
 /** 颜色节点 */
@@ -110,7 +111,11 @@ export default function RampGeneratorPage(): JSX.Element {
   const [stops, setStops] = useState<ColorStop[]>(DEFAULT_STOPS)
   const [softness, setSoftness] = useState(0.3)
   const [width, setWidth] = useState(256)
+  const [error, setError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
+  const [exporting, setExporting] = useState(false)
+
+  const { toast } = useToast()
 
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -162,28 +167,47 @@ export default function RampGeneratorPage(): JSX.Element {
 
   // 导出
   const handleExport = useCallback(async () => {
-    const savePath = await window.taAPI.saveFileDialog({
-      defaultPath: `Ramp_${width}x${RAMP_HEIGHT}.png`,
-      filters: [{ name: 'PNG', extensions: ['png'] }]
-    })
+    setError(null)
+    setSuccessMsg(null)
+    setExporting(true)
 
-    if (!savePath) return
+    try {
+      const savePath = await window.taAPI.saveFileDialog({
+        defaultPath: `Ramp_${width}x${RAMP_HEIGHT}.png`,
+        filters: [{ name: 'PNG', extensions: ['png'] }]
+      })
 
-    const result = await window.taAPI.generateRamp({
-      width,
-      height: RAMP_HEIGHT,
-      softness,
-      stops,
-      outputPath: savePath
-    })
+      if (!savePath) {
+        setExporting(false)
+        return
+      }
 
-    if (result.success) {
-      setSuccessMsg(`导出成功: ${savePath.split(/[/\\]/).pop()}`)
-      setTimeout(() => setSuccessMsg(null), 3000)
-    } else {
-      setSuccessMsg(null)
+      const result = await window.taAPI.generateRamp({
+        width,
+        height: RAMP_HEIGHT,
+        softness,
+        stops,
+        outputPath: savePath
+      })
+
+      if (result.success) {
+        const fileName = savePath.split(/[/\\]/).pop()
+        toast('success', '导出成功')
+        setSuccessMsg(`导出成功: ${fileName}`)
+        setTimeout(() => setSuccessMsg(null), 3000)
+      } else {
+        const msg = result.error || '导出失败'
+        toast('error', '导出失败: ' + msg)
+        setError(msg)
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '导出出错'
+      toast('error', '导出失败: ' + msg)
+      setError(msg)
+    } finally {
+      setExporting(false)
     }
-  }, [width, softness, stops])
+  }, [width, softness, stops, toast])
 
   return (
     <ToolShell toolId="ramp-generator">
@@ -272,11 +296,18 @@ export default function RampGeneratorPage(): JSX.Element {
           </div>
         </div>
 
-        {/* ─── 导出区 ─── */}
+        {/* ─── 错误 / 成功提示 ─── */}
+        {error && <div className={styles.successMsg} style={{ color: 'var(--color-danger)' }}>{error}</div>}
         {successMsg && <div className={styles.successMsg}>{successMsg}</div>}
+
+        {/* ─── 导出区 ─── */}
         <div className={styles.actions}>
-          <button className={styles.exportBtn} onClick={handleExport}>
-            导出 Ramp
+          <button
+            className={styles.exportBtn}
+            onClick={handleExport}
+            disabled={exporting}
+          >
+            {exporting ? '导出中...' : '导出 Ramp'}
           </button>
         </div>
       </div>

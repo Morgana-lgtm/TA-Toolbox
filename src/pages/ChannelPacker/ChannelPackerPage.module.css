@@ -1,20 +1,20 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 /* ─── 输入区：三列 DropZone ─── */
 .inputs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 /* ─── 预览区 ─── */
 .previewSection {
   display: flex;
-  gap: 20px;
+  gap: var(--space-lg);
   align-items: flex-start;
 }
 
@@ -29,30 +29,30 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 .channelInfo {
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: var(--space-md);
 }
 
 .channelTitle {
-  font-size: 14px;
+  font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-text-primary);
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-md);
 }
 
 .channelRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: var(--space-sm);
+  font-size: var(--font-sm);
   color: var(--color-text-secondary);
-  padding: 4px 0;
+  padding: var(--space-xs) 0;
 }
 
 .channelDot {
@@ -63,22 +63,22 @@
 }
 
 .channelDot.r {
-  background: #ef4444;
+  background: var(--color-channel-r);
 }
 .channelDot.g {
-  background: #22c55e;
+  background: var(--color-channel-g);
 }
 .channelDot.b {
-  background: #3b82f6;
+  background: var(--color-channel-b);
 }
 
 .formatSelect {
   width: 100%;
-  padding: 8px 10px;
+  padding: var(--space-sm) var(--space-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-bg-surface);
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-text-primary);
   cursor: pointer;
   font-family: inherit;
@@ -91,12 +91,12 @@
 
 .exportBtn {
   width: 100%;
-  padding: 10px 0;
+  padding: var(--space-sm) 0;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-white);
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: var(--font-md);
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition-fast);
@@ -115,8 +115,8 @@
 .checkRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: var(--space-sm);
+  font-size: var(--font-sm);
   color: var(--color-text-secondary);
   cursor: pointer;
   padding: 3px 0;
@@ -130,8 +130,8 @@
 }
 
 .checkHint {
-  margin: 6px 0 0;
-  font-size: 11px;
+  margin: var(--space-sm) 0 0;
+  font-size: var(--font-xs);
   color: var(--color-text-tertiary);
   line-height: 1.4;
 }
@@ -143,19 +143,19 @@
 
 /* ─── 校验错误 ─── */
 .error {
-  padding: 12px 16px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  padding: var(--space-md) var(--space-md);
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
   border-radius: var(--radius-sm);
   color: var(--color-error);
-  font-size: 13px;
+  font-size: var(--font-sm);
 }
 
 .successMsg {
-  padding: 12px 16px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  padding: var(--space-md) var(--space-md);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
   border-radius: var(--radius-sm);
   color: var(--color-success);
-  font-size: 13px;
+  font-size: var(--font-sm);
 }

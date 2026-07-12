@@ -14,16 +14,10 @@ html,
 body {
   height: 100%;
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    'PingFang SC',
-    'Microsoft YaHei',
-    'Hiragino Sans GB',
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  font-size: 14px;
+    -apple-system, BlinkMacSystemFont,
+    'Segoe UI', 'PingFang SC', 'Microsoft YaHei',
+    'Hiragino Sans GB', 'Helvetica Neue', Arial, sans-serif;
+  font-size: var(--font-md);
   line-height: 1.6;
   color: var(--color-text-primary);
   background: var(--color-bg-page);
@@ -37,6 +31,12 @@ body {
 
 button {
   font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 a {
@@ -47,6 +47,10 @@ a {
 img {
   max-width: 100%;
   display: block;
+}
+
+input, select {
+  font-family: inherit;
 }
 
 /* 滚动条 */
@@ -60,20 +64,20 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d0d0d0;
-  border-radius: 3px;
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa;
+  background: var(--color-text-tertiary);
 }
 
-/* 加载中占位 */
+/* 加载占位 */
 .page-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   color: var(--color-text-tertiary);
-  font-size: 14px;
+  font-size: var(--font-md);
 }

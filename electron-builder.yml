@@ -1,0 +1,32 @@
+appId: com.momo.ta-toolbox
+productName: "Momo's TA Toolbox"
+copyright: Copyright © 2026 Momo
+
+directories:
+  output: release
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: resources/icon.png
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  installerIcon: resources/icon.png
+  uninstallerIcon: resources/icon.png
+  installerHeaderIcon: resources/icon.png
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "Momo's TA Toolbox"
+
+files:
+  - out/**/*
+  - package.json
+
+asarUnpack:
+  - node_modules/sharp/**/*
+
+extraResources: []

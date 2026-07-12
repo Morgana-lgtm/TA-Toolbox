@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import ToolShell from '../../components/ToolShell'
 import DropZone from '../../components/common/DropZone'
 import SliderControl from '../../components/common/SliderControl'
+import { useToast } from '../../components/common/Toast'
 import styles from './TexturePreviewPage.module.css'
 
 type Channel = 'rgba' | 'r' | 'g' | 'b' | 'a'
@@ -43,6 +44,8 @@ export default function TexturePreviewPage(): JSX.Element {
   const [pixel, setPixel] = useState<{ x: number; y: number; r: number; g: number; b: number; a: number } | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const { toast } = useToast()
+
   // 保存原始图片的 ImageData（用于像素采样和通道提取）
   const originalImageDataRef = useRef<ImageData | null>(null)
   const previewBoxRef = useRef<HTMLDivElement>(null)
@@ -55,38 +58,61 @@ export default function TexturePreviewPage(): JSX.Element {
     setZoom(1)
     setPixel(null)
 
+    // 独立请求 getInfo 和 readFile，各自处理错误
+    let info: ImageInfo | null = null
+    let fileData: { dataUrl: string | null; error?: string } | null = null
+
     try {
-      const [info, fileData] = await Promise.all([
-        window.taAPI.getImageInfo(path),
-        window.taAPI.readFile(path)
-      ])
+      info = await window.taAPI.getImageInfo(path)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '未知错误'
+      toast('error', '读取图片信息失败: ' + msg)
+      setLoading(false)
+      return
+    }
 
+    try {
+      fileData = await window.taAPI.readFile(path)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '未知错误'
+      toast('error', '读取图片文件失败: ' + msg)
+      // 即使 readFile 失败，info 可能仍然可用
+    }
+
+    if (info) {
+      // 检查 info 中的 error 字段
+      if (info.error) {
+        toast('error', '图片信息异常: ' + info.error)
+      }
       setImgInfo(info)
+    }
 
-      if (fileData.dataUrl) {
-        setDataUrl(fileData.dataUrl)
+    if (fileData?.dataUrl) {
+      setDataUrl(fileData.dataUrl)
 
-        // 预加载并提取原始像素数据
-        const img = new Image()
-        img.onload = () => {
-          const c = document.createElement('canvas')
-          c.width = img.naturalWidth
-          c.height = img.naturalHeight
-          const ctx = c.getContext('2d')!
-          ctx.drawImage(img, 0, 0)
-          originalImageDataRef.current = ctx.getImageData(0, 0, c.width, c.height)
-        }
-        img.src = fileData.dataUrl
-      } else {
+      // 预加载并提取原始像素数据
+      const img = new Image()
+      img.onload = () => {
+        const c = document.createElement('canvas')
+        c.width = img.naturalWidth
+        c.height = img.naturalHeight
+        const ctx = c.getContext('2d')!
+        ctx.drawImage(img, 0, 0)
+        originalImageDataRef.current = ctx.getImageData(0, 0, c.width, c.height)
+      }
+      img.onerror = () => {
+        toast('error', '无法解码图片数据，文件可能已损坏')
         setDataUrl(null)
         originalImageDataRef.current = null
       }
-    } catch (err) {
-      console.error('加载图片失败', err)
-    } finally {
-      setLoading(false)
+      img.src = fileData.dataUrl
+    } else {
+      setDataUrl(null)
+      originalImageDataRef.current = null
     }
-  }, [])
+
+    setLoading(false)
+  }, [toast])
 
   // 切换通道 → 生成通道灰度图
   useEffect(() => {

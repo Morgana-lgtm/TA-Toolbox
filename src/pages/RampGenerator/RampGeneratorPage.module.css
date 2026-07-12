@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-lg);
   max-width: 640px;
   margin: 0 auto;
 }
@@ -11,21 +11,21 @@
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
 }
 
 .canvasWrapper {
   position: relative;
   width: 100%;
   background-image:
-    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
-    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
-    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+    linear-gradient(45deg, var(--color-checker-light) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-checker-light) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-checker-light) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-checker-light) 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
   border-radius: var(--radius-sm);
@@ -40,7 +40,7 @@
 }
 
 .previewLabel {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
 }
 
@@ -49,17 +49,17 @@
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 /* ─── 色阶节点 ─── */
 .stopsSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .stopsHeader {
@@ -69,18 +69,18 @@
 }
 
 .stopsTitle {
-  font-size: 14px;
+  font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .addBtn {
-  padding: 4px 12px;
+  padding: var(--space-xs) var(--space-md);
   border: 1px solid var(--color-accent);
   border-radius: var(--radius-sm);
   background: var(--color-accent-bg);
   color: var(--color-accent);
-  font-size: 12px;
+  font-size: var(--font-sm);
   cursor: pointer;
   font-family: inherit;
   transition: all var(--transition-fast);
@@ -88,7 +88,7 @@
 
 .addBtn:hover {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-white);
 }
 
 .addBtn:disabled {
@@ -99,14 +99,14 @@
 .stopRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
   background: var(--color-bg-page);
   border-radius: var(--radius-sm);
 }
 
 .stopIndex {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
   font-weight: 600;
   width: 22px;
@@ -140,7 +140,7 @@
 }
 
 .stopHex {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-secondary);
   font-family: monospace;
   width: 64px;
@@ -150,7 +150,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-xs);
 }
 
 .stopSlider {
@@ -158,7 +158,7 @@
   -webkit-appearance: none;
   appearance: none;
   height: 4px;
-  background: #e0e0e0;
+  background: var(--color-checker-light);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -171,13 +171,13 @@
   height: 14px;
   border-radius: 50%;
   background: var(--color-accent);
-  border: 2px solid #fff;
+  border: 2px solid var(--color-white);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }
 
 .stopPosVal {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
   width: 32px;
   text-align: right;
@@ -190,7 +190,7 @@
   border-radius: 50%;
   background: transparent;
   color: var(--color-text-tertiary);
-  font-size: 16px;
+  font-size: var(--font-lg);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -200,7 +200,7 @@
 }
 
 .removeBtn:hover {
-  background: #fef2f2;
+  background: var(--color-error-bg);
   color: var(--color-error);
 }
 
@@ -208,8 +208,8 @@
 .resRow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 13px;
+  gap: var(--space-md);
+  font-size: var(--font-sm);
 }
 
 .resLabel {
@@ -219,11 +219,11 @@
 
 .resSelect {
   flex: 1;
-  padding: 8px 10px;
+  padding: var(--space-sm) var(--space-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-bg-surface);
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-text-primary);
   cursor: pointer;
   font-family: inherit;
@@ -235,7 +235,7 @@
 }
 
 .resDisplay {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
 }
 
@@ -246,12 +246,12 @@
 }
 
 .exportBtn {
-  padding: 10px 40px;
+  padding: var(--space-sm) var(--space-lg);
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-white);
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: var(--font-md);
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition-fast);
@@ -264,9 +264,9 @@
 
 .successMsg {
   text-align: center;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-success);
-  padding: 8px;
-  background: #f0fdf4;
+  padding: var(--space-sm);
+  background: var(--color-success-bg);
   border-radius: var(--radius-sm);
 }

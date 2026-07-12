@@ -1,6 +1,6 @@
 {
   "name": "ta-toolbox",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Momo's TA Toolbox — 技术美术日常工具集",
   "main": "./out/main/index.js",
   "scripts": {

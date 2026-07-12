@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 24px 40px;
+  padding: var(--space-lg) var(--space-lg) var(--space-lg);
   max-width: 720px;
   margin: 0 auto;
 }
@@ -10,19 +10,19 @@
 /* ─── Hero ─── */
 .hero {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--space-lg);
 }
 
 .heroTitle {
-  font-size: 36px;
+  font-size: var(--font-3xl);
   font-weight: 700;
   color: var(--color-text-primary);
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-md);
   letter-spacing: -0.5px;
 }
 
 .heroDesc {
-  font-size: 15px;
+  font-size: var(--font-md);
   color: var(--color-text-tertiary);
   margin: 0;
 }
@@ -31,16 +31,16 @@
 .grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-md);
   width: 100%;
 }
 
 .card {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-md);
   width: 100%;
-  padding: 20px 24px;
+  padding: var(--space-lg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-bg-surface);
@@ -61,7 +61,7 @@
 }
 
 .cardIcon {
-  font-size: 36px;
+  font-size: var(--font-3xl);
   flex-shrink: 0;
 }
 
@@ -69,23 +69,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-xs);
 }
 
 .cardTitle {
-  font-size: 16px;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .cardDesc {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
   line-height: 1.4;
 }
 
 .cardArrow {
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--color-text-tertiary);
   transition: transform var(--transition-fast);
 }
@@ -97,8 +97,8 @@
 
 /* ─── 底部提示 ─── */
 .hint {
-  margin-top: 40px;
-  font-size: 13px;
+  margin-top: var(--space-lg);
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
   opacity: 0.6;
 }

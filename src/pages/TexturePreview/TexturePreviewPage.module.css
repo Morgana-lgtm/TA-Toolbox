@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-lg);
 }
 
 /* ─── 输入区 ─── */
@@ -16,7 +16,7 @@
 /* ─── 主内容区 ─── */
 .content {
   display: flex;
-  gap: 20px;
+  gap: var(--space-lg);
   align-items: flex-start;
 }
 
@@ -26,7 +26,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-sm);
 }
 
 /* 棋盘格预览容器 */
@@ -38,10 +38,10 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background-image:
-    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
-    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
-    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+    linear-gradient(45deg, var(--color-checker-light) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-checker-light) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-checker-light) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-checker-light) 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
   display: flex;
@@ -62,22 +62,22 @@
 
 /* ─── 缩放行 ─── */
 .zoomRow {
-  padding: 0 4px;
+  padding: 0 var(--space-xs);
 }
 
 /* ─── 通道切换 ─── */
 .channelBar {
   display: flex;
-  gap: 4px;
+  gap: var(--space-xs);
   justify-content: center;
 }
 
 .channelBtn {
-  padding: 6px 16px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-bg-surface);
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 500;
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -92,7 +92,7 @@
 
 .channelBtn.active {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-white);
   border-color: var(--color-accent);
 }
 
@@ -102,29 +102,29 @@
   justify-content: center;
   align-items: center;
   height: 28px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: var(--color-text-tertiary);
 }
 
 .pixelValues {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-sm);
   font-family: monospace;
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .pixelCoord { color: var(--color-text-tertiary); font-family: inherit; }
-.pixelR { color: #ef4444; font-weight: 600; }
-.pixelG { color: #22c55e; font-weight: 600; }
-.pixelB { color: #3b82f6; font-weight: 600; }
+.pixelR { color: var(--color-channel-r); font-weight: 600; }
+.pixelG { color: var(--color-channel-g); font-weight: 600; }
+.pixelB { color: var(--color-channel-b); font-weight: 600; }
 .pixelA { color: var(--color-text-tertiary); }
 
 .pixelHex {
   color: var(--color-text-primary);
   font-weight: 600;
   border-left: 1px solid var(--color-border);
-  padding-left: 10px;
+  padding-left: var(--space-sm);
   margin-left: 2px;
 }
 
@@ -135,23 +135,23 @@
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: var(--space-md);
 }
 
 .metaTitle {
-  font-size: 14px;
+  font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-text-primary);
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-md);
 }
 
 .metaRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 0;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 13px;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-bg-hover);
+  font-size: var(--font-sm);
 }
 
 .metaRow:last-child { border-bottom: none; }
@@ -173,9 +173,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
   color: var(--color-text-tertiary);
-  padding: 24px;
+  padding: var(--space-lg);
 }
-.placeholderIcon { font-size: 48px; }
-.placeholderText { font-size: 14px; margin: 0; }
+.placeholderIcon { font-size: var(--font-3xl); }
+.placeholderText { font-size: var(--font-md); margin: 0; }

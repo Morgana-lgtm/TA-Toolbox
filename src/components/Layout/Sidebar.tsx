@@ -1,6 +1,21 @@
+import { useState, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import { tools } from '../../tools'
 import styles from './Sidebar.module.css'
+
+function getTheme(): 'light' | 'dark' {
+  if (typeof document === 'undefined') return 'light'
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+}
+
+function setTheme(theme: 'light' | 'dark'): void {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark')
+  } else {
+    document.documentElement.removeAttribute('data-theme')
+  }
+  localStorage.setItem('ta-toolbox-theme', theme)
+}
 
 interface SidebarProps {
   collapsed: boolean
@@ -8,9 +23,15 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps): JSX.Element {
+  const [theme, setThemeState] = useState<'light' | 'dark'>(getTheme)
 
-  // 过滤掉首页（首页不在侧边栏导航中显示，或根据设计保留）
   const navTools = tools.filter((t) => t.id !== 'home')
+
+  const toggleTheme = useCallback(() => {
+    const next = theme === 'light' ? 'dark' : 'light'
+    setTheme(next)
+    setThemeState(next)
+  }, [theme])
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
@@ -27,7 +48,6 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps): JSX.Elem
 
       {/* 导航菜单 */}
       <nav className={styles.nav}>
-        {/* 首页链接 */}
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -63,12 +83,25 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps): JSX.Elem
 
       {/* 底部操作区 */}
       <div className={styles.footer}>
-        <button className={styles.collapseBtn} onClick={onToggle} title={collapsed ? '展开侧边栏' : '收起侧边栏'}>
+        <button
+          className={styles.collapseBtn}
+          onClick={onToggle}
+          title={collapsed ? '展开侧边栏' : '收起侧边栏'}
+        >
           {collapsed ? '▶' : '◀'}
         </button>
+
+        <button
+          className={styles.themeBtn}
+          onClick={toggleTheme}
+          title={theme === 'light' ? '切换暗色主题' : '切换亮色主题'}
+        >
+          {theme === 'light' ? '🌙' : '☀'}
+        </button>
+
         {!collapsed && (
           <div className={styles.footerInfo}>
-            <span className={styles.version}>v1.0.0</span>
+            <span className={styles.version}>v0.1.0</span>
           </div>
         )}
       </div>
