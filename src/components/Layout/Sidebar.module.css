@@ -1,0 +1,151 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  min-width: 240px;
+  height: 100vh;
+  background: var(--color-bg-sidebar);
+  border-right: 1px solid var(--color-border);
+  transition: width var(--transition-normal), min-width var(--transition-normal);
+  user-select: none;
+  z-index: 10;
+}
+
+.collapsed {
+  width: 60px;
+  min-width: 60px;
+}
+
+/* ─── Logo 区 ─── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.brandName {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.brandDesc {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+/* ─── 导航 ─── */
+.nav {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 8px 12px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.navItem:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.navItemActive {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+.navItemActive .navLabel {
+  font-weight: 600;
+}
+
+.navIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.navText {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.navLabel {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.navDesc {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── 底部 ─── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.collapseBtn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 12px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.collapseBtn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-text-secondary);
+}
+
+.footerInfo {
+  display: flex;
+  align-items: center;
+}
+
+.version {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
