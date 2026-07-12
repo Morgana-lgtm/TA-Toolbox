@@ -2,6 +2,8 @@
   "name": "ta-toolbox",
   "version": "0.1.0",
   "description": "Momo's TA Toolbox — 技术美术日常工具集",
+  "author": "Morgana-lgtm",
+  "license": "MIT",
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "ELECTRON_RUN_AS_NODE= electron-vite dev",
