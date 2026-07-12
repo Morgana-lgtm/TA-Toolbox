@@ -1,14 +1,208 @@
+import { useState, useCallback } from 'react'
 import ToolShell from '../../components/ToolShell'
+import DropZone from '../../components/common/DropZone'
+import ImageCanvas from '../../components/common/ImageCanvas'
+import styles from './ChannelPackerPage.module.css'
 
 export default function ChannelPackerPage(): JSX.Element {
+  const [aoPath, setAoPath] = useState<string | null>(null)
+  const [metallicPath, setMetallicPath] = useState<string | null>(null)
+  const [roughnessPath, setRoughnessPath] = useState<string | null>(null)
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [previewSize, setPreviewSize] = useState<{ width: number; height: number } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [successMsg, setSuccessMsg] = useState<string | null>(null)
+  const [exporting, setExporting] = useState(false)
+  const [outputFormat, setOutputFormat] = useState('png')
+  const [linearizeMetallic, setLinearizeMetallic] = useState(false)
+  const [linearizeRoughness, setLinearizeRoughness] = useState(false)
+
+  const packOptions = { linearizeMetallic, linearizeRoughness }
+
+  // 生成预览
+  const handlePreview = useCallback(async () => {
+    setError(null)
+    setSuccessMsg(null)
+
+    const result = await window.taAPI.packORM(
+      aoPath, metallicPath, roughnessPath, '', packOptions
+    )
+
+    if (result.success && result.dataUrl) {
+      setPreviewUrl(result.dataUrl)
+      if (result.width && result.height) {
+        setPreviewSize({ width: result.width, height: result.height })
+      }
+    } else {
+      setError(result.error || '预览失败')
+      setPreviewUrl(null)
+    }
+  }, [aoPath, metallicPath, roughnessPath, linearizeMetallic, linearizeRoughness])
+
+  // 导出 ORM
+  const handleExport = useCallback(async () => {
+    if (!aoPath && !metallicPath && !roughnessPath) {
+      setError('至少需要提供一张输入图')
+      return
+    }
+
+    setError(null)
+    setSuccessMsg(null)
+    setExporting(true)
+
+    try {
+      const savePath = await window.taAPI.saveFileDialog({
+        defaultPath: 'ORM.png',
+        filters: [{ name: outputFormat.toUpperCase(), extensions: [outputFormat] }]
+      })
+
+      if (!savePath) {
+        setExporting(false)
+        return
+      }
+
+      const result = await window.taAPI.packORM(
+        aoPath, metallicPath, roughnessPath, savePath, packOptions
+      )
+
+      if (result.success) {
+        setSuccessMsg(`导出成功: ${savePath.split(/[/\\]/).pop()}`)
+      } else {
+        setError(result.error || '导出失败')
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '导出出错')
+    } finally {
+      setExporting(false)
+    }
+  }, [aoPath, metallicPath, roughnessPath, outputFormat, linearizeMetallic, linearizeRoughness])
+
+  const hasAnyInput = !!(aoPath || metallicPath || roughnessPath)
+
   return (
     <ToolShell toolId="channel-packer">
-      <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--color-text-tertiary)' }}>
-        <p style={{ fontSize: 48, margin: '0 0 16px' }}>📦</p>
-        <p style={{ fontSize: 16, margin: 0 }}>ORM 打包功能将在 Phase 2 实现</p>
-        <p style={{ fontSize: 13, margin: '8px 0 0' }}>
-          支持将 AO、Metallic、Roughness 合并为单张 ORM 贴图
-        </p>
+      <div className={styles.page}>
+        {/* ─── 三列输入区 ─── */}
+        <div className={styles.inputs}>
+          <DropZone
+            label="AO 贴图"
+            sublabel="B 通道"
+            value={aoPath}
+            onChange={(p) => { setAoPath(p); setError(null); setSuccessMsg(null) }}
+          />
+          <DropZone
+            label="Metallic 贴图"
+            sublabel="R 通道"
+            value={metallicPath}
+            onChange={(p) => { setMetallicPath(p); setError(null); setSuccessMsg(null) }}
+          />
+          <DropZone
+            label="Roughness 贴图"
+            sublabel="G 通道"
+            value={roughnessPath}
+            onChange={(p) => { setRoughnessPath(p); setError(null); setSuccessMsg(null) }}
+          />
+        </div>
+
+        {/* ─── 错误 / 成功提示 ─── */}
+        {error && <div className={styles.error}>{error}</div>}
+        {successMsg && <div className={styles.successMsg}>{successMsg}</div>}
+
+        {/* ─── 预览区 ─── */}
+        <div className={styles.previewSection}>
+          <div className={styles.previewCanvas}>
+            <ImageCanvas
+              src={previewUrl}
+              imgWidth={previewSize?.width}
+              imgHeight={previewSize?.height}
+              containerHeight="360px"
+            />
+            <div style={{ marginTop: 12, textAlign: 'center' }}>
+              <button
+                onClick={handlePreview}
+                disabled={!hasAnyInput}
+                style={{
+                  padding: '8px 24px',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--color-bg-surface)',
+                  color: hasAnyInput ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
+                  fontSize: '13px',
+                  cursor: hasAnyInput ? 'pointer' : 'default',
+                  fontFamily: 'inherit'
+                }}
+              >
+                生成预览
+              </button>
+            </div>
+          </div>
+
+          {/* ─── 侧栏 ─── */}
+          <div className={styles.sidePanel}>
+            <div className={styles.channelInfo}>
+              <h3 className={styles.channelTitle}>通道映射</h3>
+              <div className={styles.channelRow}>
+                <span className={`${styles.channelDot} ${styles.r}`} />
+                <span>R → Metallic</span>
+              </div>
+              <div className={styles.channelRow}>
+                <span className={`${styles.channelDot} ${styles.g}`} />
+                <span>G → Roughness</span>
+              </div>
+              <div className={styles.channelRow}>
+                <span className={`${styles.channelDot} ${styles.b}`} />
+                <span>B → AO</span>
+              </div>
+            </div>
+
+            {/* ─── 色彩空间选项 ─── */}
+            <div className={styles.colorSpace}>
+              <h3 className={styles.channelTitle}>色彩空间</h3>
+              <label className={styles.checkRow}>
+                <input
+                  type="checkbox"
+                  checked={linearizeMetallic}
+                  onChange={(e) => setLinearizeMetallic(e.target.checked)}
+                />
+                <span>Metallic sRGB→Linear</span>
+              </label>
+              <label className={styles.checkRow}>
+                <input
+                  type="checkbox"
+                  checked={linearizeRoughness}
+                  onChange={(e) => setLinearizeRoughness(e.target.checked)}
+                />
+                <span>Roughness sRGB→Linear</span>
+              </label>
+              <p className={styles.checkHint}>
+                Metallic / Roughness 数据通常应为线性空间。
+                若源贴图是 sRGB，勾选后自动做 gamma 2.2 校正。
+              </p>
+            </div>
+
+            <label style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+              输出格式
+            </label>
+            <select
+              className={styles.formatSelect}
+              value={outputFormat}
+              onChange={(e) => setOutputFormat(e.target.value)}
+            >
+              <option value="png">PNG</option>
+              <option value="tiff">TIFF</option>
+              <option value="webp">WebP</option>
+            </select>
+
+            <button
+              className={styles.exportBtn}
+              onClick={handleExport}
+              disabled={!hasAnyInput || exporting}
+            >
+              {exporting ? '导出中...' : '导出 ORM'}
+            </button>
+          </div>
+        </div>
       </div>
     </ToolShell>
   )

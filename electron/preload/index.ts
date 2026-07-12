@@ -21,6 +21,12 @@ const api = {
   }): Promise<string | null> =>
     ipcRenderer.invoke('dialog:save-file', options),
 
+  /** 读取图片文件为 PNG data URL（支持 sharp 能处理的所有格式） */
+  readFile: (
+    filePath: string
+  ): Promise<{ dataUrl: string | null; error?: string }> =>
+    ipcRenderer.invoke('texture:read-file', filePath),
+
   /** 获取图片信息 */
   getImageInfo: (
     filePath: string
@@ -43,20 +49,28 @@ const api = {
 
   /** ORM 打包：三张图合并为 ORM */
   packORM: (
-    aoPath: string,
-    metallicPath: string,
-    roughnessPath: string,
-    outputPath: string
-  ): Promise<{ success: boolean; error?: string }> =>
-    ipcRenderer.invoke('texture:pack-orm', aoPath, metallicPath, roughnessPath, outputPath),
+    aoPath: string | null,
+    metallicPath: string | null,
+    roughnessPath: string | null,
+    outputPath?: string,
+    options?: { linearizeMetallic?: boolean; linearizeRoughness?: boolean }
+  ): Promise<{
+    success: boolean
+    dataUrl?: string
+    width?: number
+    height?: number
+    error?: string
+  }> =>
+    ipcRenderer.invoke(
+      'texture:pack-orm', aoPath, metallicPath, roughnessPath, outputPath, options
+    ),
 
-  /** Ramp 生成 */
+  /** Ramp 生成（多色阶） */
   generateRamp: (params: {
     width: number
     height: number
-    shadowPosition: number
     softness: number
-    contrast: number
+    stops: { position: number; color: string }[]
     outputPath: string
   }): Promise<{ success: boolean; dataUrl?: string; error?: string }> =>
     ipcRenderer.invoke('texture:generate-ramp', params)

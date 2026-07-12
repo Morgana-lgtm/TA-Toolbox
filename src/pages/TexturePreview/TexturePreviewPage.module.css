@@ -1,0 +1,181 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ─── 输入区 ─── */
+.inputRow {
+  display: flex;
+  justify-content: center;
+}
+.inputRow > * {
+  width: 360px;
+}
+
+/* ─── 主内容区 ─── */
+.content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* ─── 预览区 ─── */
+.previewArea {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 棋盘格预览容器 */
+.previewBox {
+  width: 100%;
+  max-width: 650px;
+  aspect-ratio: 1 / 1;
+  overflow: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-image:
+    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: crosshair;
+}
+
+.previewBox::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.previewImg {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ─── 缩放行 ─── */
+.zoomRow {
+  padding: 0 4px;
+}
+
+/* ─── 通道切换 ─── */
+.channelBar {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.channelBtn {
+  padding: 6px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.channelBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.channelBtn.active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* ─── 像素值（固定高度防止抖动） ─── */
+.pixelBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.pixelValues {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.pixelCoord { color: var(--color-text-tertiary); font-family: inherit; }
+.pixelR { color: #ef4444; font-weight: 600; }
+.pixelG { color: #22c55e; font-weight: 600; }
+.pixelB { color: #3b82f6; font-weight: 600; }
+.pixelA { color: var(--color-text-tertiary); }
+
+.pixelHex {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  border-left: 1px solid var(--color-border);
+  padding-left: 10px;
+  margin-left: 2px;
+}
+
+/* ─── 侧栏元信息 ─── */
+.metaPanel {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.metaTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 14px;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+
+.metaRow:last-child { border-bottom: none; }
+
+.metaLabel { color: var(--color-text-tertiary); }
+
+.metaValue {
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-align: right;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── 空状态 / 加载 ─── */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-tertiary);
+  padding: 24px;
+}
+.placeholderIcon { font-size: 48px; }
+.placeholderText { font-size: 14px; margin: 0; }
