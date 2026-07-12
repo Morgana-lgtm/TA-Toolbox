@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { tools } from '../../tools'
 import styles from './Sidebar.module.css'
@@ -24,6 +24,11 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps): JSX.Element {
   const [theme, setThemeState] = useState<'light' | 'dark'>(getTheme)
+  const [version, setVersion] = useState('')
+
+  useEffect(() => {
+    window.taAPI.getVersion().then(setVersion).catch(() => setVersion(''))
+  }, [])
 
   const navTools = tools.filter((t) => t.id !== 'home')
 
@@ -101,7 +106,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps): JSX.Elem
 
         {!collapsed && (
           <div className={styles.footerInfo}>
-            <span className={styles.version}>v0.1.0</span>
+            <span className={styles.version}>v{version || '0.1.0'}</span>
           </div>
         )}
       </div>

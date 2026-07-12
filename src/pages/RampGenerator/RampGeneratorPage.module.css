@@ -270,3 +270,12 @@
   background: var(--color-success-bg);
   border-radius: var(--radius-sm);
 }
+
+.errorMsg {
+  text-align: center;
+  font-size: var(--font-sm);
+  color: var(--color-error);
+  padding: var(--space-sm);
+  background: var(--color-error-bg);
+  border-radius: var(--radius-sm);
+}

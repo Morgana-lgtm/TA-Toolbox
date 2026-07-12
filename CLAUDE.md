@@ -423,15 +423,16 @@ Roughness.png┘       B: AO
 - [x] 完成 IPC 桥接基础
 - [x] Windows 下 ELECTRON_RUN_AS_NODE 兼容处理
 
-### Phase 2：核心工具
-- [ ] Channel Packer — ORM 打包
-- [ ] Ramp Generator — Ramp 生成器
-- [ ] Texture Preview — 贴图预览
+### Phase 2：核心工具（已完成 ✅）
+- [x] Channel Packer — ORM 打包
+- [x] Ramp Generator — Ramp 生成器
+- [x] Texture Preview — 贴图预览
 
-### Phase 3：完善
-- [ ] 设置页面（语言、主题、默认路径）
-- [ ] 错误处理与用户提示
-- [ ] Windows 安装包生成（electron-builder）
+### Phase 3：完善（部分完成）
+- [ ] 设置页面（语言、默认路径）
+- [x] 深色主题切换
+- [x] 错误处理与用户提示（Toast 通知系统）
+- [x] Windows 便携版打包（electron-builder）
 - [ ] 自动更新机制
 
 ---

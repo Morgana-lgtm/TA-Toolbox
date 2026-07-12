@@ -22,7 +22,7 @@ export default function ChannelPackerPage(): JSX.Element {
 
   const { toast } = useToast()
 
-  const packOptions = { linearizeMetallic, linearizeRoughness }
+  const packOptions = { linearizeMetallic, linearizeRoughness, format: outputFormat }
 
   // 生成预览
   const handlePreview = useCallback(async () => {

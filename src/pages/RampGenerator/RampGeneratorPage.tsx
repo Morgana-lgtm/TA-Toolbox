@@ -73,9 +73,6 @@ function generateRampPixels(
 
         // smoothstep with softness
         const halfSoft = Math.max(softness * 0.5, 0.001)
-        const low = Math.max(0, -halfSoft / segLen)
-        const high = Math.min(1, 1 + halfSoft / segLen)
-        // clamp softness to segment
         const clampLow = Math.max(0, Math.min(1, 0.5 - halfSoft))
         const clampHigh = Math.max(0, Math.min(1, 0.5 + halfSoft))
 
@@ -297,7 +294,7 @@ export default function RampGeneratorPage(): JSX.Element {
         </div>
 
         {/* ─── 错误 / 成功提示 ─── */}
-        {error && <div className={styles.successMsg} style={{ color: 'var(--color-danger)' }}>{error}</div>}
+        {error && <div className={styles.errorMsg}>{error}</div>}
         {successMsg && <div className={styles.successMsg}>{successMsg}</div>}
 
         {/* ─── 导出区 ─── */}

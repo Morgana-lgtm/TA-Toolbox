@@ -53,7 +53,7 @@ const api = {
     metallicPath: string | null,
     roughnessPath: string | null,
     outputPath?: string,
-    options?: { linearizeMetallic?: boolean; linearizeRoughness?: boolean }
+    options?: { linearizeMetallic?: boolean; linearizeRoughness?: boolean; format?: string }
   ): Promise<{
     success: boolean
     dataUrl?: string

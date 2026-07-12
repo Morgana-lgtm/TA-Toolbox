@@ -14,7 +14,8 @@
 | **Ramp 生成器** | 多色阶 Toon Shader Ramp 贴图生成，smoothstep 柔和过渡，实时预览 |
 | **贴图预览** | 查看贴图 RGBA 各通道，像素值悬停检查，自适应缩放 |
 
-![screenshot](screenshots/app.png)
+<!-- 截图待补充 -->
+<!-- ![screenshot](screenshots/app.png) -->
 
 ---
 

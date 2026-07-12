@@ -153,7 +153,7 @@ export function registerTextureHandlers(): void {
       metallicPath: string | null,
       roughnessPath: string | null,
       outputPath?: string,
-      options?: { linearizeMetallic?: boolean; linearizeRoughness?: boolean }
+      options?: { linearizeMetallic?: boolean; linearizeRoughness?: boolean; format?: string }
     ) => {
       try {
         // 收集有效输入
@@ -229,9 +229,10 @@ export function registerTextureHandlers(): void {
           }
         }
 
+        const format = (options?.format ?? 'png') as 'png' | 'tiff' | 'webp'
         const outputBuffer = await sharp(Buffer.from(merged), {
           raw: { width, height, channels: 3 }
-        }).png().toBuffer()
+        })[format]().toBuffer()
 
         if (outputPath) {
           await sharp(outputBuffer).toFile(outputPath)
